@@ -1,0 +1,92 @@
+.chat-btn{
+    cursor: pointer;
+    position: fixed;
+    right:15px; 
+    bottom:30px;
+    background-color: blue;
+    color:#fff; 
+    height:50px; 
+    width:50px; 
+    border-radius: 50px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    justify-content: center;
+    
+
+}
+
+.chat-btn .close {
+    display: none;
+}
+#check{
+    display: none !important; 
+}
+#check:checked ~ .chat-btn .comment{
+    display: none;
+}
+#check:checked ~ .chat-btn .close{
+    display: block;
+}
+#check:checked ~ .chat-wrapper{
+    opacity: 1;
+}
+
+.chat-wrapper{
+    opacity: 0;
+    position: fixed; 
+    bottom:90px; 
+    right : 15px;
+    background:white;
+    width:300px; 
+    max-height: 40%;
+    overflow: auto;
+    border-top-left-radius: 5px 5px 0px 0px;
+    border-top-right-radius: 5px 5px 0px 0px;
+    z-index:2;
+    color:#000; 
+    transition: all 0.4s;
+    
+}
+.chat-header{
+    background-color: blue;
+    padding:13px; 
+    margin-bottom:10px;
+    border-radius: 5px 5px 0px 0px;
+    color:#fff; 
+
+}
+.chat-msg{
+    background-color: #fff;
+}
+.chat-form{
+    padding: 15px;
+    
+}
+.chat-form input ,
+.chat-form textarea,
+.chat-form button{
+    margin-bottom: 10px;
+}
+
+.chat-form textarea{
+    resize: none;
+}
+
+
+.btn:focus, .btn:active, .btn.active, .btn:focus:active {
+    background-image: none;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .chat-form textarea:focus, 
+  .chat-form textarea:active, 
+  .chat-form textarea.active,
+  .chat-form textarea:focus:active {
+    background-image: none;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
