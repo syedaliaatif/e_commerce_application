@@ -2,8 +2,20 @@
 const express = require('express');
 const app = express.Router();
 
-const getProducts = require('../Controllers/productController');
+const { getProducts, getProductById, getBestSeller, adminGetProducts, adminDeleteProduct, adminCreateProduct, adminUpdateProduct, adminUpload, adminDeleteProductImage } = require('../Controllers/productController');
 
+app.get('/category/:searchCategory', getProducts);
+app.get('/category/:searchCategory/search/:searchProduct', getProducts);
+app.get('/search/:searchProduct', getProducts);
+app.get('/get-one/:productId', getProductById);
 app.get('/', getProducts);
+app.get('/bestsellers', getBestSeller);
+
+app.get('/admin', adminGetProducts);
+app.delete('/admin/:id', adminDeleteProduct);
+app.delete('/admin/:imagePath/:productId', adminDeleteProductImage);
+app.post('/admin', adminCreateProduct);
+app.post('/admin/upload', adminUpload);
+app.put('/admin/:id', adminUpdateProduct);
 
 module.exports = app; 

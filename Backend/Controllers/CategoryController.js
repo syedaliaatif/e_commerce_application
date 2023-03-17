@@ -3,7 +3,7 @@ const Category = require("../Models/CategoryModel");
 
 const getCategories = async (req, res, next) => {
 
-    connectDb();
+
     try {
         const Categories = await Category.find({});
         res.json(Categories);
@@ -16,7 +16,7 @@ const getCategories = async (req, res, next) => {
 
 const insertCategory = async (req, res, next) => {
 
-    connectDb();
+
     try {
         const { category } = req.body;
         if (!category) {
@@ -41,17 +41,18 @@ const insertCategory = async (req, res, next) => {
 }
 const deleteCategory = async (req, res, next) => {
 
-    connectDb();
+
     try {
         const categoryToDelete = decodeURIComponent(req.params.category);
         if (categoryToDelete !== "Choose Category") {
-            const categoryExists = await Category.findOne({ name: categoryToDelete }).orFail();
+            const categoryExists = await Category.findOne({ name: categoryToDelete });//.orFail();
+            console.log(categoryExists);
             if (categoryExists) {
                 categoryExists.delete();
-                res.send("Choosen Category Deleted");
+                res.status(501).send("Choosen Category Deleted");
             }
             else {
-                res.send("Category doesn't exist");
+                res.status(500).send("Category doesn't exist");
             }
 
         }
@@ -64,4 +65,55 @@ const deleteCategory = async (req, res, next) => {
     }
 
 }
-module.exports = { getCategories, insertCategory, deleteCategory }; 
+
+const saveAttr = async (req, res, next) => {
+
+    const { key, val, categoryChosen } = req.body;
+    if (!key || !val || !categoryChosen) { res.status(400).send("All inputs are required"); }
+
+    console.log(`Key : ${key} , Val : ${val}, categoryChosen: ${categoryChosen}`);
+
+
+    try {
+
+        const categoryExists = await Category.findOne({ name: categoryChosen }).orFail();
+        if (categoryExists) {
+
+            var attributeWithGivenKeyFound = false;
+
+            categoryExists.attr.map((item, idx) => {
+                if (item.key === key) {
+
+
+                    var previousValArray = item.value;
+                    previousValArray.push(val);
+                    var newValArray = [...new Set(previousValArray)];
+                    categoryExists.attr[idx].value = newValArray;
+                    attributeWithGivenKeyFound = true;
+                }
+            });
+
+
+            if (!attributeWithGivenKeyFound) {
+                categoryExists.attr.push({
+                    key: key,
+                    value: [val]
+                });
+            }
+            await categoryExists.save();
+            const updatedData = await Category.find({}).sort({ name: "asc" });
+            res.status(201).json({
+                updatedData: updatedData
+            });
+
+
+        }
+
+    }
+    catch (er) {
+        next(er);
+    }
+
+}
+
+module.exports = { getCategories, insertCategory, deleteCategory, saveAttr }; 
