@@ -186,7 +186,7 @@ const getProducts = async (req, res, next) => {
 
 const adminGetProducts = async (req, res, next) => {
     try {
-
+        console.log(req.user);
         const product = await Product.find({})
             .sort({ category: 1 })
             .select('name price category');

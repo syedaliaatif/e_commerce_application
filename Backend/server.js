@@ -1,6 +1,8 @@
 const express = require('express');
 const connectDb = require('./Config/db');
 const expressFileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const port = 3001;
 const apiRoutes = require('./Routes/apiRoutes');
@@ -11,7 +13,7 @@ app.use((req, res, next) => {
     connectDb();
     next();
 });
-
+app.use(cookieParser());
 
 app.use('/api', apiRoutes);
 
